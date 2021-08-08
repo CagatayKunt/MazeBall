@@ -27,6 +27,14 @@ namespace GameFolders.Scripts.Inputs
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""MouseDirection"",
+                    ""type"": ""Value"",
+                    ""id"": ""e509f38b-58b6-4f42-a687-9daa37b0a8c5"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -84,6 +92,17 @@ namespace GameFolders.Scripts.Inputs
                     ""action"": ""Directions"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c696ec98-b312-441e-bd90-6f85fab67bf7"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseDirection"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -93,6 +112,7 @@ namespace GameFolders.Scripts.Inputs
             // Player
             m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
             m_Player_Directions = m_Player.FindAction("Directions", throwIfNotFound: true);
+            m_Player_MouseDirection = m_Player.FindAction("MouseDirection", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -143,11 +163,13 @@ namespace GameFolders.Scripts.Inputs
         private readonly InputActionMap m_Player;
         private IPlayerActions m_PlayerActionsCallbackInterface;
         private readonly InputAction m_Player_Directions;
+        private readonly InputAction m_Player_MouseDirection;
         public struct PlayerActions
         {
             private @InputActions m_Wrapper;
             public PlayerActions(@InputActions wrapper) { m_Wrapper = wrapper; }
             public InputAction @Directions => m_Wrapper.m_Player_Directions;
+            public InputAction @MouseDirection => m_Wrapper.m_Player_MouseDirection;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -160,6 +182,9 @@ namespace GameFolders.Scripts.Inputs
                     @Directions.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDirections;
                     @Directions.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDirections;
                     @Directions.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDirections;
+                    @MouseDirection.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseDirection;
+                    @MouseDirection.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseDirection;
+                    @MouseDirection.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseDirection;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -167,6 +192,9 @@ namespace GameFolders.Scripts.Inputs
                     @Directions.started += instance.OnDirections;
                     @Directions.performed += instance.OnDirections;
                     @Directions.canceled += instance.OnDirections;
+                    @MouseDirection.started += instance.OnMouseDirection;
+                    @MouseDirection.performed += instance.OnMouseDirection;
+                    @MouseDirection.canceled += instance.OnMouseDirection;
                 }
             }
         }
@@ -174,6 +202,7 @@ namespace GameFolders.Scripts.Inputs
         public interface IPlayerActions
         {
             void OnDirections(InputAction.CallbackContext context);
+            void OnMouseDirection(InputAction.CallbackContext context);
         }
     }
 }

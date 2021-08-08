@@ -1,17 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
+using GameFolders.Scripts.Controllers;
 using UnityEngine;
 
-public class GameController : MonoBehaviour
+namespace GameFolders.Scripts
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
+    public class GameController : MonoBehaviour
     {
         
     }
